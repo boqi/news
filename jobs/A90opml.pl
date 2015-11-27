@@ -23,9 +23,10 @@ use strict;
 use warnings;
 use MyPlace::String::Utils qw/strtime/;
 my $TOPDIR = shift(@ARGV) || "";
+my $OUTDIR = shift(@ARGV) || "";
 
 print STDERR "\n",strtime(),": Close file news.opml and update\n";
-open FO,'>>',$TOPDIR . 'news.opml';
+open FO,'>>',$OUTDIR . 'news.opml';
 print FO <<EOB
 	</outline>
 	</body>
@@ -33,5 +34,5 @@ print FO <<EOB
 EOB
 ;
 close FO;
-exit system($TOPDIR . "bin/" . "git_update",$TOPDIR,$TOPDIR . "news.opml");
+exit system($TOPDIR . "bin/" . "git_update",$TOPDIR,$OUTDIR . "news.opml");
 

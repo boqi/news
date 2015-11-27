@@ -4,12 +4,18 @@ use warnings;
 use MyPlace::String::Utils qw/strtime/;
 my $DEBUG = 0;
 my $TOPDIR = shift(@ARGV) || "";
+my $OUTPUTDIR = shift(@ARGV) || "";
 my $exit = 0;
 
+if($OUTPUTDIR) {
+	if(!-d $OUTPUTDIR) {
+		system("mkdir","-v","--",$OUTPUTDIR);
+	}
+}
 while(<>) {
 	chomp;
 	my($id,$title,$filename,$url) = split(/\s*\t\s*/,$_);
-	$filename = $filename . ".xml";
+	$filename = $OUTPUTDIR . $filename . ".xml";
 	print STDERR "\n",strtime(),": Update $title ($filename)\n\tFrom $url\n";
 	if($DEBUG) {
 		print STDERR "\n",strtime(),": DEBUG -- create_url_rss process ignored\n";
@@ -22,7 +28,7 @@ while(<>) {
 		close FO;
 	}
 
-	my $OPML = $TOPDIR . "news.opml";
+	my $OPML = $OUTPUTDIR . "news.opml";
 	print STDERR strtime(),": Update OPML $OPML\n";
 	open FO,">>",$OPML or die("$!\n");
 	print FO <<EOB

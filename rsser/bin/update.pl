@@ -34,6 +34,8 @@ my @OPTIONS = qw/
 	verbose|v
 	topdir|tdir|dir=s
 	sleepwait|timewait|sleep|wait=i
+	outputdir|output|odir|o=s
+	jobsdir|jobs|jdir|j=s
 /;
 my %OPTS;
 if(@ARGV)
@@ -51,26 +53,48 @@ if($OPTS{'help'} or $OPTS{'manual'}) {
     exit $v;
 }
 
+sub normalize_dir {
+	my $dir = shift;
+	$dir =~ s/\/+$//;
+	if(!$dir) {
+		$dir = "";
+	}
+	elsif($dir eq '.') {
+		$dir = '';
+	}
+	else {
+		$dir = $dir . '/';
+	}
+}
 
 my $TOPDIR = $OPTS{topdir} || shift(@ARGV) || '';
-$TOPDIR =~ s/\/+$//;
-if(!$TOPDIR) {
-	$TOPDIR = "";
-}
-elsif($TOPDIR eq '.') {
-	$TOPDIR = '';
-}
-else {
-	$TOPDIR = $TOPDIR . '/';
-}
+$TOPDIR = normalize_dir($TOPDIR);
 my $TIMEWAIT = $OPTS{sleepwait} || 3;
 my $JOBSEL = shift(@ARGV) || 'A';
+my $OUTPUTDIR;
+if(!$OPTS{outputdir}) {
+	$OUTPUTDIR = "";
+}
+else {
+	$OUTPUTDIR = normalize_dir($OPTS{outputdir});
+	if(!-d $OUTPUTDIR) {
+		system("mkdir","-v","--",$OUTPUTDIR);
+	}
+}
+my $JOBSDIR;
+if(!$OPTS{jobsdir}) {
+	$JOBSDIR = "jobs/";
+}
+else {
+	$JOBSDIR = normalize_dir($OPTS{jobsdir});
+}
 
 
 my $done =0;
 my $failed = 0;
 foreach my $idx(map("0$_",(1..9)),(10 .. 99)) {
-	foreach my $job(&bsd_glob("${TOPDIR}jobs/$JOBSEL$idx*.pl")) {
+	my @job_files = bsd_glob("${JOBSDIR}$JOBSEL$idx*.pl");
+	foreach my $job(@job_files) {
 		my $description = "";
 		if(open FI,'<',$job) {
 			foreach(<FI>) {
@@ -83,7 +107,7 @@ foreach my $idx(map("0$_",(1..9)),(10 .. 99)) {
 			close FI;
 		}
 		print STDERR "\n",strtime(),": [$job] $description\n";
-		if(system("perl","-w","--",$job,$TOPDIR)==0) {
+		if(system("perl","-w","--",$job,$TOPDIR,$OUTPUTDIR)==0) {
 			print STDERR "\n",strtime(),": [$job] Succeeded\n";
 			$done++;
 		}

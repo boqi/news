@@ -106,7 +106,7 @@ while(@S8_FORUM) {
 }
 
 my $TOPDIR = shift(@ARGV) || '';
-open FO,'|-',$TOPDIR . 'bin/' . 'generate_rss',$TOPDIR or die("$!\n");
+open FO,'|-',$TOPDIR . 'bin/' . 'generate_rss',$TOPDIR,@ARGV or die("$!\n");
 foreach(@REQUEST) {
 	print FO join("\t",@$_),"\n";
 }

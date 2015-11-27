@@ -22,9 +22,10 @@ use strict;
 use warnings;
 use MyPlace::String::Utils qw/strtime/;
 my $TOPDIR = shift(@ARGV) || "";
+my $OUTDIR = shift(@ARGV) || "";
 
 print STDERR "\n",strtime(),": Rewritting file news.opml head\n";
-open FO,'>','news.opml';
+open FO,'>',$OUTDIR . 'news.opml';
 print FO <<EOB
 	<?xml version="1.0" encoding="UTF-8"?>
 	<opml version="1.0">

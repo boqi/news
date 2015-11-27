@@ -37,7 +37,6 @@ else {
 	$TOPDIR = $TOPDIR . '/';
 }
 
-
 my %TIME;
 $TIME{CIRCLE} = shift(@ARGV) || (1 * 24 * 60 * 60);
 $TIME{START} = time;
@@ -51,7 +50,7 @@ if(@ARGV) {
 
 CIRCLE_START:
 print STDERR "\n",strtime(),": Circle start\n";
-system($TOPDIR . "bin/update.pl",$TOPDIR);
+system($TOPDIR . "bin/update.pl",$TOPDIR,@ARGV);
 
 
 $TIME{END} = time;
