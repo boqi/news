@@ -57,3 +57,6 @@
 	<outline type="rss" text="SIS自助推荐压缩" title="SIS自助推荐压缩" xmlUrl="https://raw.githubusercontent.com/boqi/news/master/sis122.xml" htmlUrl="http://67.220.90.4/bbs/forum-122-1.html"/>
 	<outline type="rss" text="SIS第六天魔王" title="SIS第六天魔王" xmlUrl="https://raw.githubusercontent.com/boqi/news/master/sis318.xml" htmlUrl="http://67.220.90.4/bbs/forum-318-1.html"/>
 	<outline type="rss" text="SIS成人卡通" title="SIS成人卡通" xmlUrl="https://raw.githubusercontent.com/boqi/news/master/sis200.xml" htmlUrl="http://67.220.90.4/bbs/forum-200-1.html"/>
+	</outline>
+	</body>
+	</opml>
